@@ -588,7 +588,9 @@ export function startGame(canvas: HTMLCanvasElement, hud: HudEls, touch: TouchEl
     for (const s of stars) {
       ctx.globalAlpha = 0.25 + s.z * 0.25;
       ctx.fillStyle = s.z > 2.4 ? '#bfe9ff' : '#7a6cff';
-      ctx.fillRect(s.x, s.y, s.z * 0.8, s.z * 0.8 + s.z * 1.2);
+      // 縦長だと敵の弾と見間違えるので、奥 1px〜手前 2px の正方形の点にする
+      const d = 0.5 + s.z * 0.5;
+      ctx.fillRect(s.x, s.y, d, d);
     }
     ctx.globalAlpha = 1;
 
