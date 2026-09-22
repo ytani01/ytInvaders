@@ -1,7 +1,7 @@
 # TODO
 
-**残っている項目: TODO-002、TODO-003。** これまでに 1 件を決着させた。
-新しく足すときは「完了済み」の上に節を作る。**番号は `TODO-004` から。**
+**残っている項目: TODO-002、TODO-003、TODO-004。** これまでに 1 件を決着させた。
+新しく足すときは「完了済み」の上に節を作る。**番号は `TODO-005` から。**
 
 ---
 
@@ -48,6 +48,32 @@ TODO-001 の `archives/agents/TODO-001/verify.mjs` を元に Playwright で測�
 
 分担: 描画の数値だけの変更なので実装は main。分岐は変わらないので reviewer は入れない。
 verifier（Sonnet）が Playwright のスクリーンショットで、星の大きさと、描画に欠けが無いかを見る。
+
+---
+
+## TODO-004. GitHub Pages で遊べるようにする
+
+|      | main | 担当 |
+|------|------|------|
+| 見込み | Opus 5.5 / effort high | main（実装）+ verifier |
+
+- [ ] `astro.config.mjs` に `site: 'https://ytani01.github.io'` と `base: '/ytInvaders'` を足す
+- [ ] `index.astro` のルート始まりのパス（favicon など）に `import.meta.env.BASE_URL` を付ける
+- [ ] `.github/workflows/deploy.yml` を置く（`withastro/action` でビルドし、Pages に公開する）
+- [ ] `gh api` で repo の Pages を有効にする（Source は GitHub Actions）
+- [ ] README と `CLAUDE.md` の dev の URL を `http://localhost:4321/ytInvaders/` に直し、公開先の URL を README に書く
+- [ ] 利用者が push したあと、公開された URL で遊べることを確かめる
+
+背景（決まったこと）:
+
+- 公開先は `https://ytani01.github.io/ytInvaders/`（repo は public）
+- `base` は手元の dev と preview にも常に効かせる（利用者が決めた）。パスの間違いに手元で気付けるように
+- Pages の有効化は Claude が `gh api` でやる（利用者が決めた）。push は利用者がやる
+
+分担: 設定ファイルとワークフローを足すだけで、分岐は変わらないので実装は main、
+reviewer は入れない。verifier（Sonnet）が README の手順どおりに dev・build・preview を
+試し、`/ytInvaders/` の下で JS・CSS・favicon が 404 にならないかを Playwright で測る。
+push のあと、公開された URL でも同じことを測る。
 
 ---
 
