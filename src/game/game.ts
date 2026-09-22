@@ -256,6 +256,9 @@ export function startGame(canvas: HTMLCanvasElement, hud: HudEls, touch: TouchEl
   }
 
   const input = { left: false, right: false, fire: false };
+  // 押して離すまでが 1 フレームより短い押下や、撃てない間の押下を取りこぼさないよう、
+  // 押したことを覚えておき、撃てるようになった時点で 1 発出す
+  let fireQueued = false;
 
   function newWave(): void {
     enemies = makeEnemies();
@@ -347,7 +350,10 @@ export function startGame(canvas: HTMLCanvasElement, hud: HudEls, touch: TouchEl
     particles = particles.filter((p) => p.life > 0);
     shake = Math.max(0, shake - 40 * dt);
 
-    if (mode !== 'playing') return;
+    if (mode !== 'playing') {
+      fireQueued = false;
+      return;
+    }
 
     if (banner > 0) banner -= dt;
     if (invuln > 0) invuln -= dt;
@@ -356,7 +362,8 @@ export function startGame(canvas: HTMLCanvasElement, hud: HudEls, touch: TouchEl
     // 自機
     const mv = (input.right ? 1 : 0) - (input.left ? 1 : 0);
     px = Math.min(W - MARGIN - PLAYER_W, Math.max(MARGIN, px + mv * PLAYER_SPEED * dt));
-    if (input.fire && cooldown <= 0 && playerBullets.length < 2) {
+    if ((input.fire || fireQueued) && cooldown <= 0 && playerBullets.length < 2) {
+      fireQueued = false;
       playerBullets.push({ x: px + PLAYER_W / 2 - 1.5, y: PLAYER_Y - 12, w: 3, h: 12, vy: -PLAYER_BULLET_SPEED });
       cooldown = FIRE_COOLDOWN;
       sfx.shoot();
@@ -704,6 +711,7 @@ export function startGame(canvas: HTMLCanvasElement, hud: HudEls, touch: TouchEl
         break;
       case 'Space':
         input.fire = true;
+        if (!ev.repeat) fireQueued = true;
         break;
       case 'KeyP':
         if (!ev.repeat) togglePause();
@@ -748,7 +756,10 @@ export function startGame(canvas: HTMLCanvasElement, hud: HudEls, touch: TouchEl
     const down = (ev: PointerEvent): void => {
       ev.preventDefault();
       sfx.unlock();
-      if (key === 'fire') startOrContinue();
+      if (key === 'fire') {
+        startOrContinue();
+        fireQueued = true;
+      }
       input[key] = true;
       try {
         el.setPointerCapture(ev.pointerId);
