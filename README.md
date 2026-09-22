@@ -3,6 +3,8 @@
 インベーダー風のシューティングゲーム。Astro の 1 ページに Canvas 2D で描く。
 ネオン調のベクター図形で、効果音は WebAudio で合成する。
 
+https://ytani01.github.io/ytInvaders/ で遊べる。
+
 ## 遊び方
 
 | 操作 | キーボード | タッチ |
@@ -26,10 +28,13 @@
 
 ```sh
 npm install
-npm run dev      # http://localhost:4321/
+npm run dev      # http://localhost:4321/ytInvaders/
 npm run build    # dist/ に出力
 npm test         # 当たり判定と編隊の動きのテスト（node --test）
 ```
+
+master に push すると、GitHub Actions（`.github/workflows/deploy.yml`）がビルドして
+GitHub Pages に公開する。
 
 テストは Node の型を落とす機能で `.ts` を直接走らせる（Node 22.18 以降）。
 ソースは `src/game/game.ts`（ゲーム本体）、`src/game/audio.ts`（効果音）、

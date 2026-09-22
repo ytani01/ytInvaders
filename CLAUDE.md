@@ -12,7 +12,7 @@ Astro 自体の注意（dev サーバの起動のしかたなど）は [AGENTS.m
 
 ```bash
 npm install
-npm run dev       # http://localhost:4321/
+npm run dev       # http://localhost:4321/ytInvaders/
 npm run build
 ```
 
