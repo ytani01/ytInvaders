@@ -9,7 +9,7 @@
 
 |      | main | 担当 |
 |------|------|------|
-| 見込み | Opus 5.5 / effort high | implementer + reviewer + verifier |
+| 見込み | Opus 5.5 / effort high | implementer（Opus）+ reviewer（Opus）+ verifier（Sonnet） |
 
 - [ ] `src/game/game.ts` — ループ、自機、敵の編隊、弾、シールド、UFO、当たり判定、ウェーブ
 - [ ] `src/game/audio.ts` — WebAudio で効果音を合成する（音声ファイルは使わない）
@@ -32,6 +32,8 @@
 分担: implementer が実装とテスト、reviewer が差分を見る、そのあと verifier が
 `npm run build` と `npm test` を走らせ、Playwright で開いてスクリーンショットを撮り、
 描画が欠けていないか・操作で動くかを確かめる。
+implementer と reviewer は常設の定義では Sonnet だが、ゲームループや当たり判定など
+込み入ったロジックが中心なので、この項目では呼び出し時に Opus を指定する。
 
 ---
 
