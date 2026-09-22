@@ -2,16 +2,146 @@
 
 ---
 
-<html lang="en">
+<html lang="ja">
 	<head>
 		<meta charset="utf-8" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
+		<title>ytInvaders</title>
 	</head>
 	<body>
-		<h1>Astro</h1>
+		<main class="game">
+			<div class="hud">
+				<span>SCORE <b id="hud-score">0</b></span>
+				<span>HI <b id="hud-hi">0</b></span>
+				<span>WAVE <b id="hud-wave">1</b></span>
+				<span>LIVES <b id="hud-lives">3</b></span>
+			</div>
+			<canvas id="screen" width="480" height="640" aria-label="ゲーム画面"></canvas>
+			<div class="touch">
+				<button id="btn-left" type="button" aria-label="左へ移動">◀</button>
+				<button id="btn-fire" type="button" aria-label="射撃" class="fire">FIRE</button>
+				<button id="btn-right" type="button" aria-label="右へ移動">▶</button>
+			</div>
+		</main>
+
+		<script>
+			import { startGame } from '../game/game.ts';
+
+			const $ = (id: string): HTMLElement => {
+				const el = document.getElementById(id);
+				if (!el) throw new Error(`#${id} が無い`);
+				return el;
+			};
+
+			startGame(
+				$('screen') as HTMLCanvasElement,
+				{ score: $('hud-score'), hi: $('hud-hi'), lives: $('hud-lives'), wave: $('hud-wave') },
+				{ left: $('btn-left'), right: $('btn-right'), fire: $('btn-fire') },
+			);
+		</script>
+
+		<style is:global>
+			html,
+			body {
+				margin: 0;
+				height: 100%;
+				background: #05010f;
+				color: #cfe8ff;
+				overflow: hidden;
+				overscroll-behavior: none;
+				font-family: ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+			}
+		</style>
+
+		<style>
+			.game {
+				/* 論理解像度 480x640 の比率を保ったまま、画面に収まる最大の大きさにする */
+				--hud-h: 2rem;
+				--touch-h: 0rem;
+				--w: min(100vw, calc((100dvh - var(--hud-h) - var(--touch-h)) * 0.75));
+				width: var(--w);
+				margin: 0 auto;
+				display: flex;
+				flex-direction: column;
+				align-items: stretch;
+				height: 100dvh;
+				justify-content: center;
+				box-sizing: border-box;
+			}
+
+			.hud {
+				height: var(--hud-h);
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				padding: 0 0.5rem;
+				font-size: clamp(0.65rem, 2.8vw, 0.95rem);
+				letter-spacing: 0.08em;
+				color: #7fdcff;
+				text-shadow: 0 0 6px #00e5ff;
+			}
+
+			.hud b {
+				color: #fff;
+				text-shadow: 0 0 8px #ff2bd6;
+			}
+
+			canvas {
+				display: block;
+				width: var(--w);
+				height: calc(var(--w) * 4 / 3);
+				border: 1px solid #2a1650;
+				box-shadow: 0 0 24px #3a0d6a88, inset 0 0 24px #3a0d6a55;
+				box-sizing: border-box;
+				touch-action: none;
+			}
+
+			.touch {
+				display: none;
+				height: var(--touch-h);
+				gap: 0.5rem;
+				padding: 0.5rem 0.5rem calc(0.5rem + env(safe-area-inset-bottom, 0px));
+				box-sizing: border-box;
+			}
+
+			.touch button {
+				flex: 1;
+				font: inherit;
+				font-size: 1.4rem;
+				color: #00e5ff;
+				background: #0c0420;
+				border: 2px solid #00e5ff;
+				border-radius: 12px;
+				box-shadow: 0 0 12px #00e5ff66;
+				touch-action: none;
+				user-select: none;
+				-webkit-user-select: none;
+				-webkit-touch-callout: none;
+			}
+
+			.touch button:active {
+				background: #00e5ff33;
+			}
+
+			.touch .fire {
+				flex: 1.4;
+				color: #ff2bd6;
+				border-color: #ff2bd6;
+				box-shadow: 0 0 12px #ff2bd666;
+			}
+
+			/* タッチできる端末では画面下に操作ボタンを出す（主な入力がマウスでも、タッチ画面があれば出す） */
+			@media (any-pointer: coarse) {
+				.game {
+					--touch-h: calc(5.5rem + env(safe-area-inset-bottom, 0px));
+				}
+				.touch {
+					display: flex;
+				}
+			}
+		</style>
 	</body>
 </html>
