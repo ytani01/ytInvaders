@@ -21,9 +21,11 @@
 			</div>
 			<canvas id="screen" width="480" height="640" aria-label="ゲーム画面"></canvas>
 			<div class="touch">
-				<button id="btn-left" type="button" aria-label="左へ移動">◀</button>
+				<div id="lever" class="lever" role="group" aria-label="左右移動のレバー">
+					<span class="track" aria-hidden="true"><span>◀</span><span>▶</span></span>
+					<span id="lever-knob" class="lever-knob"></span>
+				</div>
 				<button id="btn-fire" type="button" aria-label="射撃" class="fire">FIRE</button>
-				<button id="btn-right" type="button" aria-label="右へ移動">▶</button>
 			</div>
 		</main>
 
@@ -39,7 +41,7 @@
 			startGame(
 				$('screen') as HTMLCanvasElement,
 				{ score: $('hud-score'), hi: $('hud-hi'), lives: $('hud-lives'), wave: $('hud-wave') },
-				{ left: $('btn-left'), right: $('btn-right'), fire: $('btn-fire') },
+				{ lever: $('lever'), leverKnob: $('lever-knob'), fire: $('btn-fire') },
 			);
 		</script>
 
@@ -107,8 +109,15 @@
 				box-sizing: border-box;
 			}
 
-			.touch button {
+			.touch > * {
 				flex: 1;
+				touch-action: none;
+				user-select: none;
+				-webkit-user-select: none;
+				-webkit-touch-callout: none;
+			}
+
+			.touch button {
 				font: inherit;
 				font-size: 1.4rem;
 				color: #00e5ff;
@@ -116,27 +125,80 @@
 				border: 2px solid #00e5ff;
 				border-radius: 12px;
 				box-shadow: 0 0 12px #00e5ff66;
-				touch-action: none;
-				user-select: none;
-				-webkit-user-select: none;
-				-webkit-touch-callout: none;
-			}
-
-			.touch button:active {
-				background: #00e5ff33;
 			}
 
 			.touch .fire {
-				flex: 1.4;
 				color: #ff2bd6;
 				border-color: #ff2bd6;
 				box-shadow: 0 0 12px #ff2bd666;
 			}
 
-			/* タッチできる端末では画面下に操作ボタンを出す（主な入力がマウスでも、タッチ画面があれば出す） */
+			.touch .fire:active {
+				background: #ff2bd633;
+			}
+
+			/* 左半分がレバー。真ん中で止まり、左右の端へ寄せるほど速い */
+			.lever {
+				position: relative;
+				overflow: hidden;
+				border: 2px solid #00e5ff55;
+				border-radius: 12px;
+				background: #0c0420;
+			}
+
+			/* レバーの溝。つまみが欄の端に着く所が全速（game.ts の moveLever） */
+			.lever .track {
+				position: absolute;
+				left: 0.5rem;
+				right: 0.5rem;
+				top: 50%;
+				height: 4px;
+				translate: 0 -50%;
+				background: linear-gradient(90deg, #00e5ff, #00e5ff22 45%, #00e5ff22 55%, #00e5ff);
+				border-radius: 2px;
+			}
+
+			.lever .track span {
+				position: absolute;
+				top: 50%;
+				translate: 0 -50%;
+				font-size: 1rem;
+				color: #00e5ffaa;
+			}
+
+			.lever .track span:first-child {
+				left: 0.25rem;
+			}
+
+			.lever .track span:last-child {
+				right: 0.25rem;
+			}
+
+			.lever-knob {
+				position: absolute;
+				left: 50%;
+				top: 50%;
+				height: min(4.5rem, 60%);
+				aspect-ratio: 1;
+				translate: -50% -50%;
+				border-radius: 50%;
+				background: #00e5ff33;
+				border: 2px solid #00e5ff;
+				box-shadow: 0 0 12px #00e5ff88;
+				box-sizing: border-box;
+				pointer-events: none;
+			}
+
+			.lever.active .lever-knob {
+				background: #00e5ff66;
+				box-shadow: 0 0 18px #00e5ff;
+			}
+
+			/* タッチできる端末では画面下に操作欄（左がレバー、右が FIRE）を出す（主な入力がマウスでも、タッチ画面があれば出す） */
 			@media (any-pointer: coarse) {
 				.game {
-					--touch-h: calc(5.5rem + env(safe-area-inset-bottom, 0px));
+					/* 画面の高さの 25%。タッチ画面付きの PC で大きくなりすぎないよう上限を付ける */
+					--touch-h: calc(min(25dvh, 12rem) + env(safe-area-inset-bottom, 0px));
 				}
 				.touch {
 					display: flex;

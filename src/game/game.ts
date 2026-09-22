@@ -137,6 +137,19 @@ function saveHigh(v: number): void {
   }
 }
 
+// ---- 移動のレバー ----
+// 中心から半径のこの割合までは倒しても動かない（触れただけで流れないように）
+export const LEVER_DEAD = 0.15;
+
+// レバーを中心から横に dx 動かしたときの倒し量（-1..1）。半径より外は端まで倒したのと同じ。
+// 動かない範囲の外側から 0 で始まり、倒した量に比例して端で 1 になる。
+export function leverAxis(dx: number, radius: number): number {
+  const t = Math.max(-1, Math.min(1, dx / radius));
+  const a = Math.abs(t);
+  if (a <= LEVER_DEAD) return 0;
+  return (Math.sign(t) * (a - LEVER_DEAD)) / (1 - LEVER_DEAD);
+}
+
 // ---- ここから下は描画と入力 ----
 
 interface HudEls {
@@ -147,8 +160,8 @@ interface HudEls {
 }
 
 interface TouchEls {
-  left: HTMLElement;
-  right: HTMLElement;
+  lever: HTMLElement; // 触れる範囲。真ん中が止まる位置
+  leverKnob: HTMLElement; // 触っている位置へ左右に動くつまみ
   fire: HTMLElement;
 }
 
@@ -255,7 +268,8 @@ export function startGame(canvas: HTMLCanvasElement, hud: HudEls, touch: TouchEl
     stars.push({ x: Math.random() * W, y: Math.random() * H, z: 1 + Math.random() * 2 });
   }
 
-  const input = { left: false, right: false, fire: false };
+  // axis はレバーの倒し量（-1..1）。キーの左右と足して使う
+  const input = { left: false, right: false, fire: false, axis: 0 };
   // 押して離すまでが 1 フレームより短い押下や、撃てない間の押下を取りこぼさないよう、
   // 押したことを覚えておき、撃てるようになった時点で 1 発出す
   let fireQueued = false;
@@ -360,7 +374,7 @@ export function startGame(canvas: HTMLCanvasElement, hud: HudEls, touch: TouchEl
     if (cooldown > 0) cooldown -= dt;
 
     // 自機
-    const mv = (input.right ? 1 : 0) - (input.left ? 1 : 0);
+    const mv = Math.max(-1, Math.min(1, (input.right ? 1 : 0) - (input.left ? 1 : 0) + input.axis));
     px = Math.min(W - MARGIN - PLAYER_W, Math.max(MARGIN, px + mv * PLAYER_SPEED * dt));
     if ((input.fire || fireQueued) && cooldown <= 0 && playerBullets.length < 2) {
       fireQueued = false;
@@ -747,6 +761,7 @@ export function startGame(canvas: HTMLCanvasElement, hud: HudEls, touch: TouchEl
   // フォーカスが外れたらキーの押しっぱなしを解き、遊んでいれば止める
   function suspend(): void {
     input.left = input.right = input.fire = false;
+    releaseLever();
     if (mode === 'playing') mode = 'paused';
   }
   window.addEventListener('blur', suspend);
@@ -754,15 +769,13 @@ export function startGame(canvas: HTMLCanvasElement, hud: HudEls, touch: TouchEl
     if (document.hidden) suspend();
   });
 
-  function bindHold(el: HTMLElement, key: 'left' | 'right' | 'fire'): void {
+  function bindFire(el: HTMLElement): void {
     const down = (ev: PointerEvent): void => {
       ev.preventDefault();
       sfx.unlock();
-      if (key === 'fire') {
-        startOrContinue();
-        fireQueued = true;
-      }
-      input[key] = true;
+      startOrContinue();
+      fireQueued = true;
+      input.fire = true;
       try {
         el.setPointerCapture(ev.pointerId);
       } catch {
@@ -770,7 +783,7 @@ export function startGame(canvas: HTMLCanvasElement, hud: HudEls, touch: TouchEl
       }
     };
     const up = (): void => {
-      input[key] = false;
+      input.fire = false;
     };
     el.addEventListener('pointerdown', down);
     // タッチでは pointerdown がユーザーの活性化にならないので、pointerup でも音を解く
@@ -782,9 +795,51 @@ export function startGame(canvas: HTMLCanvasElement, hud: HudEls, touch: TouchEl
     el.addEventListener('lostpointercapture', up);
     el.addEventListener('contextmenu', (ev) => ev.preventDefault());
   }
-  bindHold(touch.left, 'left');
-  bindHold(touch.right, 'right');
-  bindHold(touch.fire, 'fire');
+  bindFire(touch.fire);
+
+  // レバー。中心と左右の端は固定で、触っている位置の中心からの距離で速さを決める。
+  // 1 本の指だけを追い、ほかの指は無視する
+  let leverPointer: number | null = null;
+  function moveLever(clientX: number): void {
+    const r = touch.lever.getBoundingClientRect();
+    // つまみが欄の端に着く所で全速にする（つまみが欄からはみ出さず、指も画面の端まで寄せなくてよい）
+    const radius = Math.max(1, (r.width - touch.leverKnob.offsetWidth) / 2 - 4);
+    const dx = Math.max(-radius, Math.min(radius, clientX - (r.left + r.width / 2)));
+    input.axis = leverAxis(dx, radius);
+    touch.leverKnob.style.transform = `translateX(${dx}px)`;
+  }
+  function releaseLever(): void {
+    leverPointer = null;
+    input.axis = 0;
+    touch.lever.classList.remove('active');
+    touch.leverKnob.style.transform = '';
+  }
+  touch.lever.addEventListener('pointerdown', (ev) => {
+    ev.preventDefault();
+    sfx.unlock();
+    if (leverPointer !== null) return;
+    leverPointer = ev.pointerId;
+    touch.lever.classList.add('active');
+    moveLever(ev.clientX);
+    try {
+      touch.lever.setPointerCapture(ev.pointerId);
+    } catch {
+      // 取れなくても、レバーの上で動かしている間は効く
+    }
+  });
+  touch.lever.addEventListener('pointermove', (ev) => {
+    if (ev.pointerId === leverPointer) moveLever(ev.clientX);
+  });
+  const leverUp = (ev: PointerEvent): void => {
+    if (ev.pointerId === leverPointer) releaseLever();
+  };
+  touch.lever.addEventListener('pointerup', (ev) => {
+    sfx.unlock();
+    leverUp(ev);
+  });
+  touch.lever.addEventListener('pointercancel', leverUp);
+  touch.lever.addEventListener('lostpointercapture', leverUp);
+  touch.lever.addEventListener('contextmenu', (ev) => ev.preventDefault());
 
   canvas.addEventListener('pointerdown', () => {
     sfx.unlock();

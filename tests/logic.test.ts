@@ -9,6 +9,8 @@ import {
   startFormation,
   formationBounds,
   enemyRect,
+  leverAxis,
+  LEVER_DEAD,
 } from '../src/game/game.ts';
 import type { Enemy, Formation } from '../src/game/game.ts';
 
@@ -157,4 +159,23 @@ test('stepFormation: 端にちょうど接したら向きを変え、届かな�
   const shortL = stepFormation({ ox: 14, oy: 50, dir: -1 }, one(), 3, 1, 480, 10);
   assert.equal(shortL.dir, -1);
   assert.equal(shortL.oy, 50);
+});
+
+test('leverAxis: 動かない範囲の内側は 0、境目から比例して端で 1', () => {
+  const r = 100;
+  assert.equal(leverAxis(0, r), 0);
+  assert.equal(leverAxis(LEVER_DEAD * r, r), 0);
+  assert.equal(leverAxis(-LEVER_DEAD * r, r), 0);
+  assert.ok(leverAxis(LEVER_DEAD * r + 1, r) > 0);
+  assert.equal(leverAxis(r, r), 1);
+  assert.equal(leverAxis(-r, r), -1);
+  // 境目と端の中間なら半分
+  const mid = ((1 + LEVER_DEAD) / 2) * r;
+  assert.ok(Math.abs(leverAxis(mid, r) - 0.5) < 1e-9);
+  assert.ok(Math.abs(leverAxis(-mid, r) + 0.5) < 1e-9);
+});
+
+test('leverAxis: 半径より外は端まで倒したのと同じ', () => {
+  assert.equal(leverAxis(250, 100), 1);
+  assert.equal(leverAxis(-250, 100), -1);
 });
