@@ -73,23 +73,16 @@ export function formationBounds(f: Formation, enemies: Enemy[]): Rect | null {
 
 // 編隊を dt 秒ぶん動かした新しい状態を返す。端に着いたら端で止め、
 // 1 段下がって向きを変える。引数は書き換えない。
-export function stepFormation(
-  f: Formation,
-  enemies: Enemy[],
-  speed: number,
-  dt: number,
-  width: number = W,
-  margin: number = MARGIN,
-): Formation {
+export function stepFormation(f: Formation, enemies: Enemy[], speed: number, dt: number): Formation {
   const b = formationBounds(f, enemies);
   if (!b) return { ...f };
   const dx = f.dir * speed * dt;
-  const right = width - margin;
+  const right = W - MARGIN;
   if (f.dir > 0 && b.x + b.w + dx >= right) {
     return { ox: f.ox + (right - (b.x + b.w)), oy: f.oy + DROP, dir: -1 };
   }
-  if (f.dir < 0 && b.x + dx <= margin) {
-    return { ox: f.ox + (margin - b.x), oy: f.oy + DROP, dir: 1 };
+  if (f.dir < 0 && b.x + dx <= MARGIN) {
+    return { ox: f.ox + (MARGIN - b.x), oy: f.oy + DROP, dir: 1 };
   }
   return { ox: f.ox + dx, oy: f.oy, dir: f.dir };
 }
@@ -714,48 +707,30 @@ export function startGame(canvas: HTMLCanvasElement, hud: HudEls, touch: TouchEl
     else if (mode === 'paused') mode = 'playing';
   }
 
+  // 押している間だけ input を true にするキー
+  const KEYS: Record<string, 'left' | 'right' | 'fire'> = {
+    ArrowLeft: 'left',
+    KeyA: 'left',
+    ArrowRight: 'right',
+    KeyD: 'right',
+    Space: 'fire',
+  };
+
   window.addEventListener('keydown', (ev) => {
     sfx.unlock();
-    switch (ev.code) {
-      case 'ArrowLeft':
-      case 'KeyA':
-        input.left = true;
-        break;
-      case 'ArrowRight':
-      case 'KeyD':
-        input.right = true;
-        break;
-      case 'Space':
-        input.fire = true;
-        if (!ev.repeat) fireQueued = true;
-        break;
-      case 'KeyP':
-        if (!ev.repeat) togglePause();
-        break;
-      case 'Enter':
-      case 'NumpadEnter':
-        if (!ev.repeat) startOrContinue();
-        break;
-      default:
-        return;
-    }
+    const k = KEYS[ev.code];
+    if (k) input[k] = true;
+    else if (!['KeyP', 'Enter', 'NumpadEnter'].includes(ev.code)) return;
     ev.preventDefault();
+    if (ev.repeat) return;
+    if (ev.code === 'Space') fireQueued = true;
+    else if (ev.code === 'KeyP') togglePause();
+    else if (!k) startOrContinue(); // Enter
   });
 
   window.addEventListener('keyup', (ev) => {
-    switch (ev.code) {
-      case 'ArrowLeft':
-      case 'KeyA':
-        input.left = false;
-        break;
-      case 'ArrowRight':
-      case 'KeyD':
-        input.right = false;
-        break;
-      case 'Space':
-        input.fire = false;
-        break;
-    }
+    const k = KEYS[ev.code];
+    if (k) input[k] = false;
   });
 
   // フォーカスが外れたらキーの押しっぱなしを解き、遊んでいれば止める
@@ -769,33 +744,25 @@ export function startGame(canvas: HTMLCanvasElement, hud: HudEls, touch: TouchEl
     if (document.hidden) suspend();
   });
 
-  function bindFire(el: HTMLElement): void {
-    const down = (ev: PointerEvent): void => {
-      ev.preventDefault();
-      sfx.unlock();
-      startOrContinue();
-      fireQueued = true;
-      input.fire = true;
-      try {
-        el.setPointerCapture(ev.pointerId);
-      } catch {
-        // 取れなくても押している間は動く
-      }
-    };
-    const up = (): void => {
-      input.fire = false;
-    };
-    el.addEventListener('pointerdown', down);
-    // タッチでは pointerdown がユーザーの活性化にならないので、pointerup でも音を解く
-    el.addEventListener('pointerup', () => {
-      sfx.unlock();
-      up();
-    });
-    el.addEventListener('pointercancel', up);
-    el.addEventListener('lostpointercapture', up);
-    el.addEventListener('contextmenu', (ev) => ev.preventDefault());
-  }
-  bindFire(touch.fire);
+  const fireUp = (): void => {
+    input.fire = false;
+  };
+  touch.fire.addEventListener('pointerdown', (ev) => {
+    ev.preventDefault();
+    sfx.unlock();
+    startOrContinue();
+    fireQueued = true;
+    input.fire = true;
+    touch.fire.setPointerCapture(ev.pointerId);
+  });
+  // タッチでは pointerdown がユーザーの活性化にならないので、pointerup でも音を解く
+  touch.fire.addEventListener('pointerup', () => {
+    sfx.unlock();
+    fireUp();
+  });
+  touch.fire.addEventListener('pointercancel', fireUp);
+  touch.fire.addEventListener('lostpointercapture', fireUp);
+  touch.fire.addEventListener('contextmenu', (ev) => ev.preventDefault());
 
   // レバー。中心と左右の端は固定で、触っている位置の中心からの距離で速さを決める。
   // 1 本の指だけを追い、ほかの指は無視する
@@ -821,11 +788,7 @@ export function startGame(canvas: HTMLCanvasElement, hud: HudEls, touch: TouchEl
     leverPointer = ev.pointerId;
     touch.lever.classList.add('active');
     moveLever(ev.clientX);
-    try {
-      touch.lever.setPointerCapture(ev.pointerId);
-    } catch {
-      // 取れなくても、レバーの上で動かしている間は効く
-    }
+    touch.lever.setPointerCapture(ev.pointerId);
   });
   touch.lever.addEventListener('pointermove', (ev) => {
     if (ev.pointerId === leverPointer) moveLever(ev.clientX);

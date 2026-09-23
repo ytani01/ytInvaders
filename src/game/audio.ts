@@ -12,8 +12,7 @@ export class Sfx {
     if (this.disabled) return;
     try {
       if (!this.ctx) {
-        const w = window as unknown as { AudioContext?: typeof AudioContext; webkitAudioContext?: typeof AudioContext };
-        const AC = w.AudioContext ?? w.webkitAudioContext;
+        const AC = window.AudioContext;
         if (!AC) {
           this.disabled = true;
           return;
