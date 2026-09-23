@@ -11,8 +11,8 @@ import {
   enemyRect,
   leverAxis,
   LEVER_DEAD,
-} from '../src/game/game.ts';
-import type { Enemy, Formation } from '../src/game/game.ts';
+} from '../src/game/logic.ts';
+import type { Enemy, Formation } from '../src/game/logic.ts';
 
 const box = { x: 10, y: 10, w: 10, h: 10 };
 

@@ -37,5 +37,13 @@ master に push すると、GitHub Actions（`.github/workflows/deploy.yml`）�
 GitHub Pages に公開する。
 
 テストは Node の型を落とす機能で `.ts` を直接走らせる（Node 22.18 以降）。
-ソースは `src/game/game.ts`（ゲーム本体）、`src/game/audio.ts`（効果音）、
-`src/pages/index.astro`（画面と HUD）。
+ソースは `src/game/` の下にある。
+
+- `game.ts`: 入口。Canvas の用意、HUD、固定刻みのループ
+- `logic.ts`: DOM・Canvas に触らない関数と定数（テストの対象）
+- `state.ts`: ゲームの状態と、それを進める処理
+- `render.ts`: 描画
+- `input.ts`: キー・FIRE・レバー・タップの入力
+- `audio.ts`: 効果音
+
+画面と HUD は `src/pages/index.astro`。
