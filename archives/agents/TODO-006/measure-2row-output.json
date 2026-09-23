@@ -1,0 +1,282 @@
+[
+  {
+    "hudFontSizePx": 34.6128,
+    "hudHeight": 89.984375,
+    "hudTop": 0,
+    "hudBottom": 89.984375,
+    "hudRight": 906.25,
+    "hudPaddingRight": 8,
+    "spans": [
+      {
+        "text": "SCORE 99999",
+        "top": 3.453125,
+        "bottom": 44.984375,
+        "left": 381.75,
+        "right": 640.6875
+      },
+      {
+        "text": "HI 99999",
+        "top": 3.453125,
+        "bottom": 44.984375,
+        "left": 709.921875,
+        "right": 898.25
+      },
+      {
+        "text": "WAVE 10",
+        "top": 44.984375,
+        "bottom": 86.515625,
+        "left": 381.75,
+        "right": 640.6875
+      },
+      {
+        "text": "LIVES 3",
+        "top": 44.984375,
+        "bottom": 86.515625,
+        "left": 733.46875,
+        "right": 898.25
+      }
+    ],
+    "rowCount": 2,
+    "row1Texts": [
+      "SCORE 99999",
+      "HI 99999"
+    ],
+    "row2Texts": [
+      "WAVE 10",
+      "LIVES 3"
+    ],
+    "overlapRow1": false,
+    "overlapRow2": false,
+    "canvasWidth": 480,
+    "canvasHeight": 640,
+    "canvasRectTop": 89.984375,
+    "canvasRectBottom": 799.984375,
+    "gameHeight": 800,
+    "touchHeight": 0,
+    "docScrollWidth": 1280,
+    "docScrollHeight": 800,
+    "docClientWidth": 1280,
+    "docClientHeight": 800,
+    "oldFontPxEstimate": 15.2,
+    "fontRatio": 2.2771578947368423,
+    "rightEdgeOverflow": 0,
+    "row2BottomOverflowsHud": false,
+    "hudBottomOverflowsIntoCanvas": false,
+    "canvasAspect": 0.75,
+    "scrollOverflowX": false,
+    "scrollOverflowY": false,
+    "totalFits": true,
+    "screenshot": "/home/ytani/tmp/playwright-mcp/todo006-2row-1280x800-mouse.png",
+    "condition": "1280x800-mouse"
+  },
+  {
+    "hudFontSizePx": 25.9596,
+    "hudHeight": 67.484375,
+    "hudTop": 0,
+    "hudBottom": 67.484375,
+    "hudRight": 839.6875,
+    "hudPaddingRight": 8,
+    "spans": [
+      {
+        "text": "SCORE 99999",
+        "top": 2.59375,
+        "bottom": 33.734375,
+        "left": 448.3125,
+        "right": 642.390625
+      },
+      {
+        "text": "HI 99999",
+        "top": 2.59375,
+        "bottom": 33.734375,
+        "left": 690.53125,
+        "right": 831.6875
+      },
+      {
+        "text": "WAVE 10",
+        "top": 33.734375,
+        "bottom": 64.875,
+        "left": 448.3125,
+        "right": 642.390625
+      },
+      {
+        "text": "LIVES 3",
+        "top": 33.734375,
+        "bottom": 64.875,
+        "left": 708.171875,
+        "right": 831.6875
+      }
+    ],
+    "rowCount": 2,
+    "row1Texts": [
+      "SCORE 99999",
+      "HI 99999"
+    ],
+    "row2Texts": [
+      "WAVE 10",
+      "LIVES 3"
+    ],
+    "overlapRow1": false,
+    "overlapRow2": false,
+    "canvasWidth": 480,
+    "canvasHeight": 640,
+    "canvasRectTop": 67.484375,
+    "canvasRectBottom": 599.984375,
+    "gameHeight": 600,
+    "touchHeight": 0,
+    "docScrollWidth": 1280,
+    "docScrollHeight": 600,
+    "docClientWidth": 1280,
+    "docClientHeight": 600,
+    "oldFontPxEstimate": 15.2,
+    "fontRatio": 1.7078684210526316,
+    "rightEdgeOverflow": 0,
+    "row2BottomOverflowsHud": false,
+    "hudBottomOverflowsIntoCanvas": false,
+    "canvasAspect": 0.75,
+    "scrollOverflowX": false,
+    "scrollOverflowY": false,
+    "totalFits": true,
+    "screenshot": "/home/ytani/tmp/playwright-mcp/todo006-2row-1280x600-mouse.png",
+    "condition": "1280x600-mouse"
+  },
+  {
+    "hudFontSizePx": 23.4,
+    "hudHeight": 60.828125,
+    "hudTop": 7.078125,
+    "hudBottom": 67.90625,
+    "hudRight": 360,
+    "hudPaddingRight": 8,
+    "spans": [
+      {
+        "text": "SCORE 99999",
+        "top": 9.40625,
+        "bottom": 37.484375,
+        "left": 8,
+        "right": 183
+      },
+      {
+        "text": "HI 99999",
+        "top": 9.40625,
+        "bottom": 37.484375,
+        "left": 224.71875,
+        "right": 352
+      },
+      {
+        "text": "WAVE 10",
+        "top": 37.484375,
+        "bottom": 65.5625,
+        "left": 8,
+        "right": 183
+      },
+      {
+        "text": "LIVES 3",
+        "top": 37.484375,
+        "bottom": 65.5625,
+        "left": 240.625,
+        "right": 352
+      }
+    ],
+    "rowCount": 2,
+    "row1Texts": [
+      "SCORE 99999",
+      "HI 99999"
+    ],
+    "row2Texts": [
+      "WAVE 10",
+      "LIVES 3"
+    ],
+    "overlapRow1": false,
+    "overlapRow2": false,
+    "canvasWidth": 480,
+    "canvasHeight": 640,
+    "canvasRectTop": 67.90625,
+    "canvasRectBottom": 547.90625,
+    "gameHeight": 740,
+    "touchHeight": 185,
+    "docScrollWidth": 360,
+    "docScrollHeight": 740,
+    "docClientWidth": 360,
+    "docClientHeight": 740,
+    "oldFontPxEstimate": 10.4,
+    "fontRatio": 2.25,
+    "rightEdgeOverflow": 0,
+    "row2BottomOverflowsHud": false,
+    "hudBottomOverflowsIntoCanvas": false,
+    "canvasAspect": 0.75,
+    "scrollOverflowX": false,
+    "scrollOverflowY": false,
+    "totalFits": false,
+    "screenshot": "/home/ytani/tmp/playwright-mcp/todo006-2row-360x740-touch.png",
+    "condition": "360x740-touch"
+  },
+  {
+    "hudFontSizePx": 18.4313,
+    "hudHeight": 47.90625,
+    "hudTop": 0,
+    "hudBottom": 47.90625,
+    "hudRight": 301.765625,
+    "hudPaddingRight": 8,
+    "spans": [
+      {
+        "text": "SCORE 99999",
+        "top": 1.828125,
+        "bottom": 23.953125,
+        "left": 26.21875,
+        "right": 164.0625
+      },
+      {
+        "text": "HI 99999",
+        "top": 1.828125,
+        "bottom": 23.953125,
+        "left": 193.515625,
+        "right": 293.765625
+      },
+      {
+        "text": "WAVE 10",
+        "top": 23.953125,
+        "bottom": 46.078125,
+        "left": 26.21875,
+        "right": 164.0625
+      },
+      {
+        "text": "LIVES 3",
+        "top": 23.953125,
+        "bottom": 46.078125,
+        "left": 206.046875,
+        "right": 293.765625
+      }
+    ],
+    "rowCount": 2,
+    "row1Texts": [
+      "SCORE 99999",
+      "HI 99999"
+    ],
+    "row2Texts": [
+      "WAVE 10",
+      "LIVES 3"
+    ],
+    "overlapRow1": false,
+    "overlapRow2": false,
+    "canvasWidth": 480,
+    "canvasHeight": 640,
+    "canvasRectTop": 47.90625,
+    "canvasRectBottom": 425.984375,
+    "gameHeight": 568,
+    "touchHeight": 142,
+    "docScrollWidth": 320,
+    "docScrollHeight": 568,
+    "docClientWidth": 320,
+    "docClientHeight": 568,
+    "oldFontPxEstimate": 10.4,
+    "fontRatio": 1.7722403846153845,
+    "rightEdgeOverflow": 0,
+    "row2BottomOverflowsHud": false,
+    "hudBottomOverflowsIntoCanvas": false,
+    "canvasAspect": 0.75,
+    "scrollOverflowX": false,
+    "scrollOverflowY": false,
+    "totalFits": false,
+    "screenshot": "/home/ytani/tmp/playwright-mcp/todo006-2row-320x568-touch.png",
+    "condition": "320x568-touch"
+  }
+]

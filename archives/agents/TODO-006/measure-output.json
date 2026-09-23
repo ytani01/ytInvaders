@@ -1,0 +1,182 @@
+[
+  {
+    "hudFontSizePx": 21.5232,
+    "hudClientWidth": 566,
+    "hudScrollWidth": 566,
+    "hudHeight": 44.796875,
+    "hudRight": 923.1875,
+    "hudPaddingRight": 8,
+    "spans": [
+      {
+        "text": "SCORE 99999",
+        "top": 10.390625,
+        "right": 525.78125
+      },
+      {
+        "text": "HI 99999",
+        "top": 10.390625,
+        "right": 665.328125
+      },
+      {
+        "text": "WAVE 10",
+        "top": 10.390625,
+        "right": 790.265625
+      },
+      {
+        "text": "LIVES 3",
+        "top": 10.390625,
+        "right": 915.1875
+      }
+    ],
+    "oneLine": true,
+    "canvasWidth": 480,
+    "canvasHeight": 640,
+    "docScrollWidth": 1280,
+    "docScrollHeight": 800,
+    "docClientWidth": 1280,
+    "docClientHeight": 800,
+    "oldFontPxEstimate": 15.2,
+    "fontRatio": 1.416,
+    "rightEdgeOverflow": 0,
+    "canvasAspect": 0.75,
+    "scrollOverflowX": false,
+    "scrollOverflowY": false,
+    "screenshot": "/home/ytani/tmp/playwright-mcp/todo006-1280x800-mouse.png",
+    "condition": "1280x800-mouse"
+  },
+  {
+    "hudFontSizePx": 15.8232,
+    "hudClientWidth": 416,
+    "hudScrollWidth": 416,
+    "hudHeight": 44.796875,
+    "hudRight": 848.1875,
+    "hudPaddingRight": 8,
+    "spans": [
+      {
+        "text": "SCORE 99999",
+        "top": 13.390625,
+        "right": 558.109375
+      },
+      {
+        "text": "HI 99999",
+        "top": 13.390625,
+        "right": 659.296875
+      },
+      {
+        "text": "WAVE 10",
+        "top": 13.390625,
+        "right": 749.75
+      },
+      {
+        "text": "LIVES 3",
+        "top": 13.390625,
+        "right": 840.1875
+      }
+    ],
+    "oneLine": true,
+    "canvasWidth": 480,
+    "canvasHeight": 640,
+    "docScrollWidth": 1280,
+    "docScrollHeight": 600,
+    "docClientWidth": 1280,
+    "docClientHeight": 600,
+    "oldFontPxEstimate": 15.2,
+    "fontRatio": 1.0410000000000001,
+    "rightEdgeOverflow": 0,
+    "canvasAspect": 0.75,
+    "scrollOverflowX": false,
+    "scrollOverflowY": false,
+    "screenshot": "/home/ytani/tmp/playwright-mcp/todo006-1280x600-mouse.png",
+    "condition": "1280x600-mouse"
+  },
+  {
+    "hudFontSizePx": 13.68,
+    "hudClientWidth": 360,
+    "hudScrollWidth": 360,
+    "hudHeight": 44.796875,
+    "hudRight": 360,
+    "hudPaddingRight": 8,
+    "spans": [
+      {
+        "text": "SCORE 99999",
+        "top": 29.984375,
+        "right": 110.296875
+      },
+      {
+        "text": "HI 99999",
+        "top": 29.984375,
+        "right": 197.0625
+      },
+      {
+        "text": "WAVE 10",
+        "top": 29.984375,
+        "right": 274.53125
+      },
+      {
+        "text": "LIVES 3",
+        "top": 29.984375,
+        "right": 352
+      }
+    ],
+    "oneLine": true,
+    "canvasWidth": 480,
+    "canvasHeight": 640,
+    "docScrollWidth": 360,
+    "docScrollHeight": 740,
+    "docClientWidth": 360,
+    "docClientHeight": 740,
+    "oldFontPxEstimate": 10.4,
+    "fontRatio": 1.3153846153846154,
+    "rightEdgeOverflow": 0,
+    "canvasAspect": 0.75,
+    "scrollOverflowX": false,
+    "scrollOverflowY": false,
+    "screenshot": "/home/ytani/tmp/playwright-mcp/todo006-360x740-touch.png",
+    "condition": "360x740-touch"
+  },
+  {
+    "hudFontSizePx": 10.8642,
+    "hudClientWidth": 286,
+    "hudScrollWidth": 286,
+    "hudHeight": 44.796875,
+    "hudRight": 302.9375,
+    "hudPaddingRight": 8,
+    "spans": [
+      {
+        "text": "SCORE 99999",
+        "top": 16.390625,
+        "right": 106.3125
+      },
+      {
+        "text": "HI 99999",
+        "top": 16.390625,
+        "right": 174.109375
+      },
+      {
+        "text": "WAVE 10",
+        "top": 16.390625,
+        "right": 234.53125
+      },
+      {
+        "text": "LIVES 3",
+        "top": 16.390625,
+        "right": 294.9375
+      }
+    ],
+    "oneLine": true,
+    "canvasWidth": 480,
+    "canvasHeight": 640,
+    "docScrollWidth": 320,
+    "docScrollHeight": 568,
+    "docClientWidth": 320,
+    "docClientHeight": 568,
+    "oldFontPxEstimate": 10.4,
+    "fontRatio": 1.0446346153846153,
+    "rightEdgeOverflow": 0,
+    "canvasAspect": 0.75,
+    "scrollOverflowX": false,
+    "scrollOverflowY": false,
+    "screenshot": "/home/ytani/tmp/playwright-mcp/todo006-320x568-touch.png",
+    "condition": "320x568-touch"
+  }
+]

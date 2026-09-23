@@ -61,9 +61,11 @@
 		<style>
 			.game {
 				/* 論理解像度 480x640 の比率を保ったまま、画面に収まる最大の大きさにする */
-				--hud-h: 2rem;
 				--touch-h: 0rem;
-				--w: min(100vw, calc((100dvh - var(--hud-h) - var(--touch-h)) * 0.75));
+				/* ヘッダは 2 行で、文字は幅の 0.065 倍、高さは 2.6 行分（幅の 0.169 倍）。
+				   高さが幅で決まるので、w = (高さ - 操作欄 - 0.169w) * 0.75 を w について解いた式にする（TODO-006） */
+				--w: min(100vw, calc((100dvh - var(--touch-h)) * 0.75 / 1.12675));
+				--hud-h: calc(var(--w) * 0.169);
 				width: var(--w);
 				margin: 0 auto;
 				display: flex;
@@ -76,14 +78,22 @@
 
 			.hud {
 				height: var(--hud-h);
-				display: flex;
+				/* 2×2 に並べる（SCORE・HI / WAVE・LIVES） */
+				display: grid;
+				grid-template-columns: auto auto;
 				justify-content: space-between;
-				align-items: center;
+				align-content: center;
+				column-gap: 1em;
 				padding: 0 0.5rem;
-				font-size: clamp(0.65rem, 2.8vw, 0.95rem);
+				font-size: calc(var(--w) * 0.065);
+				line-height: 1.2;
 				letter-spacing: 0.08em;
 				color: #7fdcff;
 				text-shadow: 0 0 6px #00e5ff;
+			}
+
+			.hud span:nth-child(even) {
+				justify-self: end;
 			}
 
 			.hud b {
