@@ -14,6 +14,7 @@ Astro 自体の注意（dev サーバの起動のしかたなど）は [AGENTS.m
 npm install
 npm run dev       # http://localhost:4321/ytInvaders/
 npm run build
+npm run check     # 型チェック（astro check）。build は型を見ない
 ```
 
 タスクは [TODO.md](TODO.md) で管理する。
